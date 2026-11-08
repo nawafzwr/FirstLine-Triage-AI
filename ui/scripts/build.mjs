@@ -1,0 +1,15 @@
+import {readFile,mkdir,writeFile,unlink} from 'node:fs/promises';
+import {resolve} from 'node:path';
+const root=resolve(import.meta.dirname,'..');
+const html=(await readFile(resolve(root,'web/index.html'),'utf8')).replace('/* ESI_INTEGRATION */',await readFile(resolve(root,'web/integration.js'),'utf8'));
+let worker=(await readFile(resolve(root,'worker/index.js'),'utf8')).replace('/* PAGE_HTML */ ""',JSON.stringify(html));
+for(const [marker,file] of [['MODEL_RUNTIME','model-runtime.js'],['MAPPING_RUNTIME','mapping.js'],['WORKFLOW_RUNTIME','workflow.js']])worker=worker.replace(`/* ${marker} */`,(await readFile(resolve(root,'worker',file),'utf8')).replace(/^export /gm,''));
+worker=worker.replace('/* MODEL_DATA */ null',await readFile(resolve(root,'worker/model.json'),'utf8')).replace('/* MAPPER_CONFIG */ null',await readFile(resolve(root,'worker/mapper.json'),'utf8'));
+const manifest=JSON.parse(await readFile(resolve(root,'.openai/hosting.json'),'utf8'));
+if(manifest.static)throw new Error('Worker manifest must not retain static hosting.');
+await unlink(resolve(root,'dist/index.html')).catch(error=>{if(error.code!=='ENOENT')throw error});
+await mkdir(resolve(root,'dist/server'),{recursive:true});await mkdir(resolve(root,'dist/client'),{recursive:true});await mkdir(resolve(root,'dist/.openai'),{recursive:true});
+await writeFile(resolve(root,'dist/server/index.js'),worker);await writeFile(resolve(root,'dist/client/index.html'),html);await writeFile(resolve(root,'dist/.openai/hosting.json'),JSON.stringify(manifest,null,2));
+for(const script of html.matchAll(/<script>([\s\S]*?)<\/script>/g))new Function(script[1]);
+const module=await import('data:text/javascript;base64,'+Buffer.from(worker).toString('base64'));if(typeof module.default?.fetch!=='function')throw new Error('Worker fetch export missing.');
+console.log('Built hosted ESI inference and anonymous review Worker. Browser script syntax valid.');

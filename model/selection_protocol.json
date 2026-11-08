@@ -1,0 +1,14 @@
+{
+  "recorded_date": "2026-11-02",
+  "recorded_before_complete_outer_cv": true,
+  "baseline": "w0_gnone_nnone",
+  "purpose": "Choose one working research candidate, not a clinically accepted production policy.",
+  "urgent_improvement_requirements": [
+    "ESI 2 predicted as 3-5 is lower than baseline",
+    "ESI 2 predicted as 4-5 is no greater than baseline",
+    "Overall under-triage is no greater than baseline"
+  ],
+  "primary_selection": "Among candidates meeting these requirements and at least baseline accuracy, choose lowest ESI 2 under-triage, then highest accuracy, then lowest over-triage.",
+  "fallback_selection": "If none also preserves accuracy, show the trade-off and select the highest-accuracy candidate meeting the urgent-improvement requirements, then lowest ESI 2 under-triage. If none meets those requirements, retain baseline.",
+  "reporting": "Also report the accuracy leader and urgent-recall leader, all 22 results, per-hospital results, and over-triage. No clinical maximum over-triage or harm ratio is inferred. Selected results are development estimates after model comparison, not untouched final-test performance."
+}
