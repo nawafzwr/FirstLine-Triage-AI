@@ -54,6 +54,12 @@ The notebook also contains the cohort selection, three hospital holdouts and fin
 
 ![FirstLine patient intake for a fictional case](docs/screenshots/step-1.jpg)
 
+## Team
+
+- **Atheer A. Alboloshi** proposed the project, led the team, and contributed to model engineering and development. [GitHub](https://github.com/Atheeralboloshi2021-commits)
+- **Areen A. Alboloshi** acquired the dataset, helped develop the idea and project, contributed graphic design, and led communications. [GitHub](https://github.com/AreenAlboloshi)
+- **Nawaf bin Jurayyan** worked on data preparation, model evaluation and inference benchmarking, prototype integration and deployment, and repository setup. [GitHub](https://github.com/nawafzwr)
+
 ## Data provenance
 
 The training export is based on the [Yale ED triage dataset and methods](https://github.com/yaleemmlc/admissionprediction). See the [original study](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0201016). No visit-level training records are included.
